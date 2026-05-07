@@ -14,7 +14,7 @@ load_dotenv()
 from langchain_community.document_loaders import JSONLoader
 def build_index():
     jq_schema = ".[] | {instruction: .instruction, input: .input, output: .output}"
-    medical_loader = JSONLoader(file_path="D:/OneDrive - Coforge Limited/Documents/llmops/chat_doctor/data/chatdoctor5k.json",jq_schema=jq_sc,text_content=False)
+    medical_loader = JSONLoader(file_path="D:/OneDrive - Coforge Limited/Documents/llmops/chat_doctor/data/chatdoctor5k.json",jq_schema=jq_schema,text_content=False)
     docs = medical_loader.load()
     medical_csv_loader=CSVLoader(file_path="D:/OneDrive - Coforge Limited/Documents/llmops/chat_doctor/data/format_dataset.csv")
     medical_csv_docs=medical_csv_loader.load()
