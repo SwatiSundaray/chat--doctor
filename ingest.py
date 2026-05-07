@@ -7,16 +7,22 @@ from dotenv import load_dotenv
 import warnings
 warnings.filterwarnings("ignore")
 from langchain.document_loaders import CSVLoader
-
+from pathlib import Path
 load_dotenv()
+
+BASE_DIR = Path(__file__).parent
+DATA_DIR = BASE_DIR / "data"
+
 
 #2. Load the pdf 
 from langchain_community.document_loaders import JSONLoader
 def build_index():
     jq_schema = ".[] | {instruction: .instruction, input: .input, output: .output}"
-    medical_loader = JSONLoader(file_path="D:/OneDrive - Coforge Limited/Documents/llmops/chat_doctor/data/chatdoctor5k.json",jq_schema=jq_schema,text_content=False)
+    json_path = DATA_DIR / "chatdoctor5k.json"
+    medical_loader = JSONLoader(file_path=json_path,jq_schema=jq_schema,text_content=False)
     docs = medical_loader.load()
-    medical_csv_loader=CSVLoader(file_path="D:/OneDrive - Coforge Limited/Documents/llmops/chat_doctor/data/format_dataset.csv")
+    csv_path = DATA_DIR / "format_dataset.csv"
+    medical_csv_loader=CSVLoader(file_path=csv_path)
     medical_csv_docs=medical_csv_loader.load()
     final_medical_docs=medical_csv_docs+docs
     recursive_splitter = RecursiveCharacterTextSplitter(chunk_size = 500, chunk_overlap=100,separators=["\n\n", "\n", " ", "", ".",",", ";"])
